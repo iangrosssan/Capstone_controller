@@ -1,0 +1,59 @@
+/* styles.qss */
+QWidget {
+    background-color: #2B2B2B;
+    color: #E0E0E0;
+}
+
+QTableWidget {
+    background-color: #3C3F41;
+    color: #E0E0E0;
+    font: 14pt "Rockwell";
+    border-radius: 10px;
+    border-style: outset;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+QPushButton {
+    background-color: #3C3F41;
+    color: #E0E0E0;
+    border: 1px solid #4A4A4A;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font: 14pt "Rockwell";
+}
+
+QPushButton:hover {
+    background-color: #4A4A4A;
+    border: 2px solid #5C7CFA; /* Blue border on hover */
+    color: #FFFFFF; /* Optional: Change text color on hover */
+}
+
+QPushButton:pressed {
+    background-color: #2A2D2F;
+}
+
+QPushButton:disabled {
+    background-color: #2A2D2F;
+    color: #A0A0A0;
+    border: 1px solid #4A4A4A;
+}
+
+QPushButton:focus {
+    outline: none; /* Remove default focus outline */
+}
+
+
+QLabel {
+    background-color: #2B2B2B;
+    color: #E0E0E0;
+    border: none;
+}
+
+QLabel#title {
+    font: 75 24pt "Rockwell";
+}
+
+QLabel#regular {
+    font: 14pt "Rockwell";
+}
