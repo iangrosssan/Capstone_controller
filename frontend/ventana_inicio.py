@@ -14,7 +14,7 @@ class VentanaInicio(window_name, base_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.n_axis_selected = 0
+        self.axes = []
         self.b_connect.setEnabled(False)
         self.b_calibrate.setEnabled(False)
         self.b_run.setEnabled(False)
@@ -39,10 +39,10 @@ class VentanaInicio(window_name, base_class):
         for i in devices:
             if i.column() == 0:
                 uris.append(i.text())
-        self.n_axis_selected = len(uris)
-        conectar_motores(uris)
+        self.axes = conectar_motores(uris)
         self.activar_calibrar()
         self.activar_ejecutar()
+
 
     def activar_conectar(self):
         self.b_connect.setEnabled(True)

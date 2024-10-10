@@ -68,19 +68,16 @@ def buscar_devices():
 def conectar_motores(uris):
     manager = AxisManager()
     manager.set_axes(uris)
+    return manager.axes
 
 # CONTROL
 # A posición cero
-def home(n_axis):
-    manager = AxisManager()
-    for i in range(n_axis):
-        axis = manager.axes[i]
-        print(axis)
-        axis.open_device()
-        axis.command_move(500, 0)
-        axis.command_wait_for_stop(100)
-        print("Axis {} home".format(axis))
-        axis.close_device()
+def home(axis):
+    axis.open_device()
+    axis.command_move(0, 0)
+    axis.command_wait_for_stop(100)
+    print("Axis {} home".format(axis))
+    axis.close_device()
 
 
 def movimiento_axial(axis, pasos, sleep, direccion):
