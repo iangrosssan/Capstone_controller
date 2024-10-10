@@ -1,11 +1,9 @@
-import sys, time
+import sys
 
 from PyQt5.QtWidgets import QApplication
 
 from frontend.ventana_inicio import VentanaInicio
 from frontend.ventana_calibracion import VentanaCalibracion
-
-from backend.funciones import AxisManager, home
 
 
 # FUNCIONES
@@ -15,7 +13,6 @@ def load_stylesheet(filename):
 
 
 def w_calibrate():
-    axis_manager = AxisManager().axes
     ventana_calibracion.axes = ventana_inicio.axes
     ventana_calibracion.show()    
     ventana_calibracion.setup_ui()

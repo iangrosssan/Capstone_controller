@@ -1,5 +1,4 @@
 import pathlib, os, time
-import matplotlib.pyplot as plt
 import libximc.highlevel as ximc
 import keyboard, threading
 
