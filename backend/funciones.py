@@ -21,7 +21,6 @@ class AxisManager:
 
 
 # SEÑAL DE TECLADO
-
 def on_key_press(event):
     pass
 
@@ -30,6 +29,7 @@ def keyboard_listener():
     hook = keyboard.on_press(on_key_press)
     keyboard.wait('esc')
     keyboard.unhook(hook)
+
 
 
 # CONEXIÓN CON CONTROLADOR
@@ -70,6 +70,7 @@ def conectar_motores(uris):
     manager.set_axes(uris)
     return manager.axes
 
+
 # CONTROL
 # A posición cero
 def home(axis):
@@ -80,6 +81,45 @@ def home(axis):
     axis.close_device()
 
 
+def set_range(axis):
+    axis.open_device()
+    lower_range = joystick(axis)
+    time.sleep(0.5)
+    upper_range = joystick(axis)
+    axis.close_device()
+    print("Range setted")
+    print(lower_range, upper_range)
+
+
+def fix(axis):
+    axis.open_device()
+    fixed_position = joystick(axis)
+    axis.close_device()
+    print("Axis fixed")
+    print(fixed_position)
+
+
+def joystick(axis):
+    listener = threading.Thread(target=keyboard_listener)
+    listener.start()
+
+    while listener.is_alive():
+        if keyboard.is_pressed('right'):
+            axis.command_movr(100, 0)
+            axis.command_wait_for_stop(100)
+            print("right")
+        if keyboard.is_pressed('left'):
+            axis.command_movr(-100, 0)
+            axis.command_wait_for_stop(100)
+            print("left")
+        if keyboard.is_pressed('enter'):
+            print('enter')
+            return axis.get_position().Position    
+
+def run_back_forth(axis):
+    pass
+
+    
 def movimiento_axial(axis, pasos, sleep, direccion):
     axis.command_movr(pasos*direccion, 0)
     axis.command_wait_for_stop(sleep)

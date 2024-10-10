@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QPushButton,
 from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUiType
 
-from backend.funciones import home
+from backend.funciones import home, set_range, fix
 
 window_name, base_class = loadUiType("frontend/ventana_calibracion.ui")
 
@@ -41,11 +41,13 @@ class VentanaCalibracion(window_name, base_class):
             set_range_button.setObjectName(f"b_set_range_{i + 1}")  # Unique object name
             self.set_range_buttons.append(set_range_button)
             set_range_button.setCursor(Qt.PointingHandCursor)
+            set_range_button.clicked.connect(lambda _, ax=self.axes[i]: set_range(ax))
         
             fix_button = QPushButton("Fix")
             fix_button.setObjectName(f"b_fix_{i + 1}")  # Unique object name
             self.fix_buttons.append(fix_button)
             fix_button.setCursor(Qt.PointingHandCursor)
+            fix_button.clicked.connect(lambda _, ax=self.axes[i]: fix(ax))
 
             grid_layout.addWidget(home_button, i, 1)
             grid_layout.addWidget(set_range_button, i, 2)
