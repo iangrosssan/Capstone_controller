@@ -2,21 +2,8 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
-from frontend.ventana_inicio import VentanaInicio
-from frontend.ventana_calibracion import VentanaCalibracion
-
-
-# FUNCIONES
-def load_stylesheet(filename):
-    with open(filename, "r") as file:
-        return file.read()
-
-
-def w_calibrate():
-    ventana_calibracion.axes = ventana_inicio.axes
-    ventana_calibracion.show()    
-    ventana_calibracion.setup_ui()
-
+from frontend.w_connect import WindowConnect
+from frontend.w_calibrate import WindowCalibrate
 
 if __name__ == '__main__':
     def hook(type, traceback):
@@ -24,19 +11,27 @@ if __name__ == '__main__':
         print(traceback)
     sys.__excepthook__ = hook
     app = QApplication([])
-    stylesheet = load_stylesheet("frontend/styles.qss")
-    app.setStyleSheet(stylesheet)
+    with open("frontend/styles.qss", "r") as file:
+        stylesheet = file.read()
+        app.setStyleSheet(stylesheet)
+
+
+def w_calibrate():
+    window_calibrate.axes = window_connect.axes
+    window_calibrate.show()    
+    window_calibrate.setup_ui()
 
 
 # INSTANCIAS
-ventana_inicio = VentanaInicio()
-ventana_calibracion = VentanaCalibracion()
+window_connect = WindowConnect()
+window_calibrate = WindowCalibrate()
 
 
 # FLUJO
-ventana_inicio.show()
-ventana_inicio.b_search.clicked.connect(lambda: ventana_inicio.buscar())
-ventana_inicio.b_connect.clicked.connect(lambda: ventana_inicio.conectar())
-ventana_inicio.b_calibrate.clicked.connect(w_calibrate)
+window_connect.show()
+window_connect.b_search.clicked.connect(lambda: window_connect.buscar())
+window_connect.b_connect.clicked.connect(lambda: window_connect.conectar())
+window_connect.b_calibrate.clicked.connect(w_calibrate)
+
 
 app.exec_()
