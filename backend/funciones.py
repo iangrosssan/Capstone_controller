@@ -1,22 +1,7 @@
 import pathlib, os, time
-import libximc.highlevel as ximc
 import keyboard, threading
 
-
-# backend/axis_manager.py
-class AxisManager:
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(AxisManager, cls).__new__(cls)
-            cls._instance.axes = []
-        return cls._instance
-
-    def set_axes(self, uris):
-        self.axes = [ximc.Axis(uri) for uri in uris]
-        print("Axes setted")
-        print(self.axes)
+from backend.classes import AxisManager
 
 
 # SEÑAL DE TECLADO
@@ -34,15 +19,15 @@ def keyboard_listener():
 # CONEXIÓN CON CONTROLADOR
 def buscar_devices(): 
     l_devices = []
-    devices = ximc.enumerate_devices(
-    ximc.EnumerateFlags.ENUMERATE_NETWORK |
-    ximc.EnumerateFlags.ENUMERATE_PROBE
-    )
-    if devices:
-        device_uri_1 = devices[0]['uri']
-        l_devices.append(device_uri_1)
-        device_uri_2 = devices[1]['uri']
-        l_devices.append(device_uri_2)
+    # devices = ximc.enumerate_devices(
+    # ximc.EnumerateFlags.ENUMERATE_NETWORK |
+    # ximc.EnumerateFlags.ENUMERATE_PROBE
+    # )
+    # if devices:
+    #     device_uri_1 = devices[0]['uri']
+    #     l_devices.append([device_uri_1, "Real"])
+    #     device_uri_2 = devices[1]['uri']
+    #     l_devices.append([device_uri_2, "Real"])
 
     virtual_device_filename_1 = "virtual_motor_controller_1.bin"
     virtual_device_file_path_1 = os.path.join(
@@ -56,12 +41,11 @@ def buscar_devices():
         virtual_device_filename_2
     )
     v_device_uri_1 = "xi-emu:///{}".format(virtual_device_file_path_1)
-    l_devices.append(v_device_uri_1)
+    l_devices.append([v_device_uri_1, "Virtual"])
     v_device_uri_2 = "xi-emu:///{}".format(virtual_device_file_path_2)
-    l_devices.append(v_device_uri_2)
+    l_devices.append([v_device_uri_2, "Virtual"])
 
-
-    return l_devices, False
+    return l_devices
 
     
 def conectar_motores(uris):
@@ -72,48 +56,50 @@ def conectar_motores(uris):
 
 # CONTROL
 # A posición cero
-def home(axis):
+def home(axis_number, axis, position_changed_signal):
     axis.open_device()
     axis.command_move(0, 0)
     axis.command_wait_for_stop(100)
-    print("Axis {} home".format(axis))
+    position_changed_signal.emit(axis_number, axis.get_position().Position)
     axis.close_device()
+    
 
-
-def set_range(axis):
+def set_range(axis_number, axis, position_changed_signal):
     axis.open_device()
-    lower_range = joystick(axis)
+    lower_range = joystick(axis_number, axis, position_changed_signal)
     time.sleep(0.5)
-    upper_range = joystick(axis)
+    upper_range = joystick(axis_number, axis, position_changed_signal)
     axis.close_device()
     print("Range setted")
     print(lower_range, upper_range)
 
 
-def fix(axis):
+def fix(axis_number, axis, position_changed_signal):
     axis.open_device()
-    fixed_position = joystick(axis)
+    fixed_position = joystick(axis_number, axis, position_changed_signal)
     axis.close_device()
     print("Axis fixed")
     print(fixed_position)
 
 
-def joystick(axis):
+def joystick(axis_number, axis, position_changed_signal):
     listener = threading.Thread(target=keyboard_listener)
     listener.start()
 
     while listener.is_alive():
         if keyboard.is_pressed('right'):
-            axis.command_movr(100, 0)
+            axis.command_movr(20, 0)
             axis.command_wait_for_stop(100)
+            position_changed_signal.emit(axis_number, axis.get_position().Position)
             print("right")
         if keyboard.is_pressed('left'):
-            axis.command_movr(-100, 0)
+            axis.command_movr(-20, 0)
             axis.command_wait_for_stop(100)
+            position_changed_signal.emit(axis_number, axis.get_position().Position)
             print("left")
         if keyboard.is_pressed('enter'):
             print('enter')
-            return axis.get_position().Position    
+            return axis.get_position().Position
 
 def run_back_forth(axis):
     pass

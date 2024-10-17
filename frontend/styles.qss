@@ -4,13 +4,26 @@ QWidget {
     color: #E0E0E0;
 }
 
+QHeaderView::section {
+    background-color: #3C3F41;
+    color: #E0E0E0;
+    font: 14pt "Rockwell";
+    border: 0px;
+    padding: 10px;
+}
+
+QHeaderView::section:disabled {
+    background-color: #2B2B2B;
+    color: #A0A0A0;
+}
+
 QTableWidget {
     background-color: #3C3F41;
     color: #E0E0E0;
     font: 14pt "Rockwell";
     border-radius: 10px;
     border-style: outset;
-    padding: 5px;
+    padding: 10px;
     border: 1px solid black;
 }
 
