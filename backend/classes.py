@@ -1,6 +1,4 @@
 import libximc.highlevel as ximc
-from PyQt5.QtCore import QObject, pyqtSignal
-
 
 class AxisManager:
     _instance = None
@@ -13,5 +11,3 @@ class AxisManager:
 
     def set_axes(self, uris):
         self.axes = [ximc.Axis(uri) for uri in uris]
-        print("Axes setted")
-        print(self.axes)

@@ -34,6 +34,7 @@ QPushButton {
     border-radius: 8px;
     padding: 5px 10px;
     font: 14pt "Rockwell";
+    min-height: 40px;
 }
 
 QPushButton:hover {
@@ -61,9 +62,11 @@ QLabel {
     background-color: #2B2B2B;
     color: #E0E0E0;
     border: none;
+    min-height: 40px;
+    min-width: 40px;
 }
 
-QLabel#title {
+QLabel#l_title {
     font: 75 24pt "Rockwell";
 }
 

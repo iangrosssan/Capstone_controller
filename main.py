@@ -18,6 +18,7 @@ if __name__ == '__main__':
 
 def w_calibrate():
     window_calibrate.axes = window_connect.axes
+    window_calibrate.routine = window_connect.routine
     window_calibrate.show()    
     window_calibrate.setup_ui()
 

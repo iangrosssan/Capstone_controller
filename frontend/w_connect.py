@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QTableWidgetItem, QHeaderView
 from PyQt5.uic import loadUiType
 from PyQt5.QtCore import Qt
 
-from backend.funciones import buscar_devices, conectar_motores
+from backend.connection import buscar_devices, conectar_motores
 
 window_name, base_class = loadUiType("frontend/w_connect.ui")
 
@@ -17,6 +17,7 @@ class WindowConnect(window_name, base_class):
         self.b_connect.setEnabled(False)
         self.b_calibrate.setEnabled(False)
         self.t_device.horizontalHeader().setFixedHeight(45)
+        self.t_device.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.t_routines.horizontalHeaderItem(0).setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.t_device.horizontalHeaderItem(0).setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.t_device.horizontalHeaderItem(1).setTextAlignment(Qt.AlignLeft | Qt.AlignVCenter)
@@ -49,4 +50,5 @@ class WindowConnect(window_name, base_class):
 
     def activate_calibrate(self):
         if self.t_routines.selectedItems() and self.t_device.selectedItems():
+            self.routine = self.t_routines.selectedItems()[0].text()
             self.b_calibrate.setEnabled(True)
