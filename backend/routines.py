@@ -55,8 +55,46 @@ def joystick(axis_number, axis, position_type, position_changed_signal):
             return axis.get_position().Position
 
 
-def run_back_forth(range_axis, range, fixed_axis=None, fixed_position=None):
-    pass
+def timed_back_forth(axis_1, axis_type_1, position_1, axis_2=None, axis_type_2=None, position_2=None, step=20):
+    if axis_type_1 == 'range':
+        axis_1.open_device()
+        axis_1.command_move(position_1[0], 0)
+        axis_1.command_wait_for_stop(100)
+        pos = position_1[0]
+        while True:
+            while pos <= position_1[1] - step:
+                axis_1.command_move(pos, 0)
+                axis_1.command_wait_for_stop(100)
+                pos += step
+                print("Current position:", axis_1.get_position().Position)
+
+            # Move axis_1 to position 0 with step 300
+            while pos >= position_1[0] + step:
+                axis_1.command_move(pos, 0)
+                axis_1.command_wait_for_stop(100)
+                pos -= step
+                print("Current position:", axis_1.get_position().Position)
+        axis_1.close_device()
+    if axis_type_2 == 'range':
+        axis_2.open_device()
+        axis_2.command_move(position_2[0], 0)
+        axis_2.command_wait_for_stop(100)
+        pos = position_2[0]
+        while True:
+            while pos <= position_2[1] - step:
+                axis_2.command_move(pos, 0)
+                axis_2.command_wait_for_stop(100)
+                pos += step
+                print("Current position:", axis_2.get_position().Position)
+
+            # Move axis_1 to position 0 with step 300
+            while pos >= position_2[0] + step:
+                axis_2.command_move(pos, 0)
+                axis_2.command_wait_for_stop(100)
+                pos -= step
+                print("Current position:", axis_2.get_position().Position)
+        axis_2.close_device()
+    
 
     
 def movimiento_axial(axis, pasos, sleep, direccion):

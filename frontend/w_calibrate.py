@@ -26,7 +26,7 @@ class WindowCalibrate(window_name, base_class):
         self.set_range_buttons = []
         self.fix_buttons = []
 
-        self.b_run.setEnabled(False)
+        #self.b_run.setEnabled(False)
 
         self.position_changed.connect(self.update_axis_label)
         self.axis_ready.connect(self.set_axis)
@@ -79,25 +79,28 @@ class WindowCalibrate(window_name, base_class):
         if position_type == 0:
             self.axis_labels[axis_number].setText(f"Axis {axis_number+1}\n{int(position)}\n")
             self.axis_labels[axis_number].repaint()
+
         elif position_type == 1:
             self.axis_labels[axis_number].setText(f"Axis {axis_number+1}\nFix: {int(position)}\n")
             self.axis_labels[axis_number].adjustSize()
             self.axis_labels[axis_number].repaint()
-            self.axis_setting[self.axes[axis_number]] = {'axis_type': 'fix', 'position': [position]}
+            self.axis_setting[self.axes[axis_number]] = {'axis_type': 'fix', 'position': [int(position)]}
+
         elif position_type == 2:
             self.axis_labels[axis_number].setText(f"Axis {axis_number+1}<br>Lower: {int(position)}<br>Upper: -")
             self.axis_labels[axis_number].adjustSize()
             self.axis_labels[axis_number].repaint()
-            self.axis_setting[self.axes[axis_number]] = {'axis_type': 'range', 'position': [position]}
+            self.axis_setting[self.axes[axis_number]] = {'axis_type': 'range', 'position': [int(position)]}
 
         elif position_type == 3:
             low_bound = int(self.axis_setting[self.axes[axis_number]]['position'][0])
             self.axis_labels[axis_number].setText(f"Axis {axis_number+1}<br>Lower: {low_bound}<br>Upper: {int(position)}")
             self.axis_labels[axis_number].adjustSize()
             self.axis_labels[axis_number].repaint()
-            self.axis_setting[self.axes[axis_number]]['position'].append(position)
-        print(self.axis_setting)
-
+            if len(self.axis_setting[self.axes[axis_number]]['position']) > 1:
+                self.axis_setting[self.axes[axis_number]]['position'][1] = int(position)
+            else:
+                self.axis_setting[self.axes[axis_number]]['position'].append(int(position))
         
 
     def set_axis(self, axis_number, position):
